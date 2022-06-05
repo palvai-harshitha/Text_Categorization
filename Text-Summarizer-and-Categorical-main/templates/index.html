@@ -1,0 +1,164 @@
+{% extends 'template.html' %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-5 main-panel">
+            <div class="panel-tabs">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="col-md-4 active">
+                        <div class="inner"><a href="#write_text" aria-controls="write_text" role="tab" data-toggle="tab"><i class="ion-ios-paper"></i><h4>Write text</h4></a></div>
+                    </li>
+                    <li role="presentation" class="col-md-4">
+                        <div class="inner"><a href="#get_from_link" aria-controls="get_from_link" role="tab" data-toggle="tab"><i class="ion-ios-world"></i><h4>Get from link</h4></a></div>
+                    </li>
+                    <li role="presentation" class="col-md-4" style="display:none;">
+                        <div class="inner"><a href="#get_from_file" aria-controls="get_from_link" role="tab" data-toggle="tab"><i class="ion-ios-book"></i><h4>Get from file</h4></a></div>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade in component-box active" id="write_text">
+                        <form action="/analyze_text" method="POST">
+                            <div class="input-area" style="display:none;">
+                                <label> Language</label>
+                                <div class="radio-group">
+                                    <input type="radio" name="text_language" id="text_lang_english" value="english" checked />
+                                    <label for="text_lang_english">English</label>
+                                </div> 
+                            </div> 
+                            <div class="input-area">
+                                <label> Enter Your Text</label>
+                                <textarea name="text_input_text" id="text_input_text" cols="30" rows="7" placeholder="Type your text here to summarize and get category..." required></textarea>
+                            </div> 
+                            <div class="input-area">
+                                <label> Select Classifier</label>
+                                <div class="radio-group">
+                                    <input type="radio" name="text_classifier" id="text_random_forest" value="random_forest_model" />
+                                    <label for="text_random_forest">Random Forest</label>
+                                    <input type="radio" name="text_classifier" id="text_logistic_regression" value="logistic_regression_model" />
+                                    <label for="text_logistic_regression">Logistic Regression</label>
+                                </div> 
+                            </div> 
+                            <div class="input-area" style="display:none;">
+                                <div class="number">
+                                    <span class="minus"><i class="ion-ios-arrow-down"></i></span>
+                                    <input type="text" name="text_sentences_number" value="10" />
+                                    <span class="plus"><i class="ion-ios-arrow-up"></i></span>
+                                </div>
+                            </div> 
+                            <input type="submit" value="Get Category" />
+                        </form>
+                    </div> 
+                    <div role="tabpanel" class="tab-pane fade component-box" id="get_from_link">
+                        <form action="/analyze_url" method="POST">
+                            <div class="input-area" style="display:none;">
+                                <label>Language</label>
+                                <div class="radio-group">
+                                    <input type="radio" name="url_language" id="url_lang_english" value="english" checked />
+                                    <label for="url_lang_english">English</label>
+                                </div>
+                            </div> 
+                            <div class="input-area">
+                                <label> Enter A Link</label>
+                                <input type="text" name="url_input_text" placeholder="Get text from external website..." required autocomplete="off"/>
+                            </div> 
+                            <div class="input-area">
+                                <label> Select Classifier</label>
+                                <div class="radio-group">
+                                    <input type="radio" name="url_classifier" id="url_random_forest" value="random_forest_model" /> 
+                                    <label for="url_random_forest">Random Forest</label>
+                                    <input type="radio" name="url_classifier" id="url_logistic_regression" value="logistic_regression_model" />
+                                    <label for="url_logistic_regression">Logistic Regression</label>
+                                </div> 
+                            </div>
+                            <div class="input-area" style="display:none;">
+                                <div class="number">
+                                    <span class="minus"><i class="ion-ios-arrow-down"></i></span>
+                                    <input type="text" name="url_sentences_number" value="10" />
+                                    <span class="plus"><i class="ion-ios-arrow-up"></i></span>
+                                </div>
+                            </div> 
+                            <input type="submit" value="Get Category" />
+                        </form>
+                    </div> 
+                    <div role="tabpanel" class="tab-pane fade component-box" id="get_from_file">
+                        <form action="/analyze_file" method="POST">
+                            <div class="input-area" style="display:none;">
+                                <div class="radio-group">
+                                    <input type="radio" name="file_language" id="file_lang_english" value="english" checked />
+                                    <label for="file_lang_english">English</label>
+                                </div> 
+                            </div> 
+                            <div class="input-area">
+                                <label> Upload the File</label>
+                                <input type="file" name="file_input_text" placeholder="Get text from file..." required autocomplete="off"/>
+                            </div> 
+                            <div class="input-area">
+                                <label> Select Classifier</label>
+                                <div class="radio-group">
+                                    <input type="radio" name="file_classifier" id="file_random_forest" value="random_forest_model" /> 
+                                    <label for="file_random_forest">Random Forest</label>
+                                    <input type="radio" name="file_classifier" id="file_logistic_regression" value="logistic_regression_model" />
+                                    <label for="file_logistic_regression">Logistic Regression</label>
+                                </div> 
+                            </div> 
+                            <div class="input-area" style="display:none;">
+                                <div class="number">
+                                    <span class="minus"><i class="ion-ios-arrow-down"></i></span>
+                                    <input type="text" name="url_sentences_number" value="10" />
+                                    <span class="plus"><i class="ion-ios-arrow-up"></i></span>
+                                </div>
+                            </div> 
+                            <input type="submit" value="Get Category" />
+                        </form>
+                    </div> 
+                </div> 
+            </div>
+        </div> 
+        {% if text_summary %}
+        <div class="output-panel col-md-7">
+        <div class="component-box normal-input-text">
+                <label>Your Input Text</label>
+                <p>{{ input_text }}</p>
+            </div>
+            <div class="component-box summary-text" >
+                <p style="display:none;">{{ text_summary }}</p>
+                <br />
+                <label>Text Category</label>
+                <div class="category">
+                    <!-- {% if text_category == 'Economy & Buisness' %}
+                        <span class="green active">Economy & Buisness</span>
+                    {% endif %}
+                    {% if text_category == 'Diverse News' %}
+                        <span class="blue active">Diverse News</span>
+                    {% endif %}
+                    {% if text_category == 'Politic' %}
+                        <span class="red active">Politic</span>
+                    {% endif %}
+                    {% if text_category == 'Sport' %}
+                        <span class="green active">Sport</span>
+                    {% endif %}
+                    {% if text_category == 'Technology' %}
+                        <span class="red active">Technology</span>
+                    {% endif %} -->
+                    {% if text_category == 'Econimy & Buisness' %}
+                        <span class="blue active">Economy & Buisness</span>
+                    {% elif text_category == 'Diverse News' %}
+                        <span class="blue active">Diverse News</span>
+                    {% elif text_category == 'Politic' %}
+                        <span class="red active">Politic</span>
+                    {% elif text_category == 'Sport' %}
+                        <span class="green active">Sport</span>
+                    {% elif text_category == 'Technology' %}
+                        <span class="red active">Technology</span>
+                    {% else %} 
+                        <span class="blue active">Diverse News</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div> 
+
+        {% endif %}
+    </div> 
+</div>
+{% endblock %}
